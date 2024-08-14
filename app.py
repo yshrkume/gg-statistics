@@ -35,7 +35,6 @@ class UpcomingTasksCountResource(Resource):
         today = datetime.utcnow().date()
 
         for plant in plants:
-            # Calculate watering schedule
             watering_interval = {
                 "daily": 1,
                 "every 3 days": 3,
@@ -48,7 +47,6 @@ class UpcomingTasksCountResource(Resource):
                 plant["purchase_date"], "%Y-%m-%d"
             ).date()
 
-            # 現在から1週間先までの水やり回数をカウント
             while last_watering_date <= (today + timedelta(days=7)):
                 next_watering_date = last_watering_date + timedelta(
                     days=watering_interval
@@ -57,7 +55,6 @@ class UpcomingTasksCountResource(Resource):
                     upcoming_watering_count += 1
                 last_watering_date = next_watering_date
 
-            # Calculate fertilizing schedule
             fertilizing_interval = {"weekly": 7, "bi-weekly": 14, "monthly": 30}.get(
                 plant["fertilizing_frequency"], 30
             )
@@ -66,7 +63,6 @@ class UpcomingTasksCountResource(Resource):
                 plant["purchase_date"], "%Y-%m-%d"
             ).date()
 
-            # 現在から1週間先までの肥料やり回数をカウント
             while last_fertilizing_date <= (today + timedelta(days=7)):
                 next_fertilizing_date = last_fertilizing_date + timedelta(
                     days=fertilizing_interval
